@@ -1,0 +1,697 @@
+ -------------------------------------------------------------------------------------------------------
+
+Roll No: 3460
+Name: Srushti Sulgudle
+CNumber: C22019221459
+
+Problem statement:Implementation of SQL-DDL commands (Create,Alter,Drop)
+Queries:
+1. Create the following tables with suitable constraints (use Auto increment, unique,
+not null, Default, Primary key, Foreign key) and solve the queries:
+2. Use Alter table command to add foreign key constraint. Add Two Columns to
+existing Purchase Table as c_no and i_no and make them Foreign key, and remove
+any one column, Increase the size of any attribute.
+3. Demonstrate the use of Drop command to delete the database created, delete the
+table and column.
+(Note : Insert at least 15-20 records per table )
+Output:
+
+
+******** Query 1 *******-------------------------------------------------------------------------
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| cummins            |
+| d                  |
+| information_schema |
+| jio                |
+| mysql              |
+| performance_schema |
+| ppc                |
+| sys                |
++--------------------+
+8 rows in set (0.04 sec)
+
+mysql> use cummins;
+Database changed
+mysql> create table customer(cno int primary key, cname varchar(20),ccity varchar(20),cmobile int);
+Query OK, 0 rows affected (0.61 sec)
+
+mysql> desc customer;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| cno     | int         | NO   | PRI | NULL    |       |
+| cname   | varchar(20) | YES  |     | NULL    |       |
+| ccity   | varchar(20) | YES  |     | NULL    |       |
+| cmobile | int         | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+4 rows in set (0.12 sec)
+
+mysql> alter table customer
+    -> modify column cno
+    -> int auto_increment primary key;
+ERROR 1068 (42000): Multiple primary key defined
+mysql> alter table customer
+    -> modify column cno
+    -> int auto_increment ;
+Query OK, 0 rows affected (1.25 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+mysql> desc customer;
++---------+-------------+------+-----+---------+----------------+
+| Field   | Type        | Null | Key | Default | Extra          |
++---------+-------------+------+-----+---------+----------------+
+| cno     | int         | NO   | PRI | NULL    | auto_increment |
+| cname   | varchar(20) | YES  |     | NULL    |                |
+| ccity   | varchar(20) | YES  |     | NULL    |                |
+| cmobile | int         | YES  |     | NULL    |                |
++---------+-------------+------+-----+---------+----------------+
+4 rows in set (0.07 sec)
+
+mysql> create table item(ino int primary key auto_increment,iname varchar(20), itype varchar(10), iprice int ,icount int);
+Query OK, 0 rows affected (0.40 sec)
+
+mysql> create table purchase(pno int primary key auto_increment, pdate date ,pqty int);
+Query OK, 0 rows affected (0.38 sec)
+
+mysql> desc purchase;
++-------+------+------+-----+---------+----------------+
+| Field | Type | Null | Key | Default | Extra          |
++-------+------+------+-----+---------+----------------+
+| pno   | int  | NO   | PRI | NULL    | auto_increment |
+| pdate | date | YES  |     | NULL    |                |
+| pqty  | int  | YES  |     | NULL    |                |
++-------+------+------+-----+---------+----------------+
+3 rows in set (0.07 sec)
+
+
+mysql> alter table purchase modify pqty int not null;
+Query OK, 0 rows affected (0.61 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc purchase;
++-------+------+------+-----+---------+----------------+
+| Field | Type | Null | Key | Default | Extra          |
++-------+------+------+-----+---------+----------------+
+| pno   | int  | NO   | PRI | NULL    | auto_increment |
+| pdate | date | YES  |     | NULL    |                |
+| pqty  | int  | NO   |     | NULL    |                |
++-------+------+------+-----+---------+----------------+
+3 rows in set (0.10 sec)
+
+
+
+mysql> alter table customer modify cmobile bigint;
+Query OK, 0 rows affected (1.18 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc customer;
++---------+-------------+------+-----+---------+----------------+
+| Field   | Type        | Null | Key | Default | Extra          |
++---------+-------------+------+-----+---------+----------------+
+| cno     | int         | NO   | PRI | NULL    | auto_increment |
+| cname   | varchar(20) | YES  |     | NULL    |                |
+| ccity   | varchar(20) | YES  |     | NULL    |                |
+| cmobile | bigint      | YES  |     | NULL    |                |
++---------+-------------+------+-----+---------+----------------+
+4 rows in set (0.04 sec)
+
+mysql> insert into customer values(null,"Srushti","Pune",8978675678);
+Query OK, 1 row affected (0.45 sec)
+
+mysql> select * from customer;
++-----+---------+-------+------------+
+| cno | cname   | ccity | cmobile    |
++-----+---------+-------+------------+
+|   1 | Srushti | Pune  | 8978675678 |
++-----+---------+-------+------------+
+1 row in set (0.00 sec)
+
+mysql> insert into customer values(null,"Shruti","Nashik",8293672678);
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into customer values(null,"Anshika","Nagpur",9876234567);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into customer values(null,"Arushi","Delhi",9876237898);
+Query OK, 1 row affected (0.09 sec)
+
+mysql> insert into customer values(null,"Rashi","Mumbai",9876722338);
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into customer values(null,"Raj","Mumbai",9872341338);
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into customer values(null,"Arunita","Kolkata",8976234455);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into customer values(null,"Shreya","Kolkata",8998877655);
+Query OK, 1 row affected (0.06 sec)
+
+mysql> select * from customer;
++-----+---------+---------+------------+
+| cno | cname   | ccity   | cmobile    |
++-----+---------+---------+------------+
+|   1 | Srushti | Pune    | 8978675678 |
+|   2 | Shruti  | Nashik  | 8293672678 |
+|   3 | Anshika | Nagpur  | 9876234567 |
+|   4 | Arushi  | Delhi   | 9876237898 |
+|   5 | Rashi   | Mumbai  | 9876722338 |
+|   6 | Raj     | Mumbai  | 9872341338 |
+|   7 | Arunita | Kolkata | 8976234455 |
+|   8 | Shreya  | Kolkata | 8998877655 |
++-----+---------+---------+------------+
+8 rows in set (0.00 sec)
+
+mysql> insert into customer values(null,"Sham","Kolkata",7898564534);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into customer values(null,"Shaan","Kolkata",7898564594);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into customer values(null,"Sam","Kolkata",7890564594);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into customer values(null,"Madhu","Latur",7899804534);
+Query OK, 1 row affected (0.26 sec)
+
+mysql> insert into customer values(null,"Srushti","Latur",9999804534);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into customer values(null,"Bhushan","Latur",9899804534);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into customer values(null,"Bhumi","Beed",9776655534);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select * from customer;
++-----+---------+---------+------------+
+| cno | cname   | ccity   | cmobile    |
++-----+---------+---------+------------+
+|   1 | Srushti | Pune    | 8978675678 |
+|   2 | Shruti  | Nashik  | 8293672678 |
+|   3 | Anshika | Nagpur  | 9876234567 |
+|   4 | Arushi  | Delhi   | 9876237898 |
+|   5 | Rashi   | Mumbai  | 9876722338 |
+|   6 | Raj     | Mumbai  | 9872341338 |
+|   7 | Arunita | Kolkata | 8976234455 |
+|   8 | Shreya  | Kolkata | 8998877655 |
+|   9 | Sham    | Kolkata | 7898564534 |
+|  10 | Shaan   | Kolkata | 7898564594 |
+|  11 | Sam     | Kolkata | 7890564594 |
+|  12 | Madhu   | Latur   | 7899804534 |
+|  13 | Srushti | Latur   | 9999804534 |
+|  14 | Bhushan | Latur   | 9899804534 |
+|  15 | Bhumi   | Beed    | 9776655534 |
++-----+---------+---------+------------+
+15 rows in set (0.00 sec)
+
+mysql> desc item;
++--------+-------------+------+-----+---------+----------------+
+| Field  | Type        | Null | Key | Default | Extra          |
++--------+-------------+------+-----+---------+----------------+
+| ino    | int         | NO   | PRI | NULL    | auto_increment |
+| iname  | varchar(20) | YES  |     | NULL    |                |
+| itype  | varchar(10) | YES  |     | NULL    |                |
+| iprice | int         | YES  |     | NULL    |                |
+| icount | int         | YES  |     | NULL    |                |
++--------+-------------+------+-----+---------+----------------+
+5 rows in set (0.22 sec)
+
+mysql> insert into item values(null,"kitkat","chocolate",5,100);
+Query OK, 1 row affected (0.10 sec)
+
+mysql> insert into item values(null,"perk","chocolate",5,200);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into item values(null,"5star","chocolate",5,20);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into item values(null,"cadboury","chocolate",10,20);
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into item values(null,"milk","grocery",15,100);
+Query OK, 1 row affected (0.43 sec)
+
+mysql> insert into item values(null,"bread","grocery",30,200);
+Query OK, 1 row affected (0.09 sec)
+
+mysql> insert into item values(null,"snacks","grocery",5,20);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into item values(null,"earbuds","gadgets",500,20);
+Query OK, 1 row affected (0.08 sec)
+
+mysql> insert into item values(null,"headphoes","gadgets",600,20);
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into item values(null,"headphones","gadgets",600,20);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into item values(null,"watch","gadgets",1000,20);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> select *  from item;
++-----+------------+-----------+--------+--------+
+| ino | iname      | itype     | iprice | icount |
++-----+------------+-----------+--------+--------+
+|   1 | kitkat     | chocolate |      5 |    100 |
+|   2 | perk       | chocolate |      5 |    200 |
+|   3 | 5star      | chocolate |      5 |     20 |
+|   4 | cadboury   | chocolate |     10 |     20 |
+|   5 | milk       | grocery   |     15 |    100 |
+|   6 | bread      | grocery   |     30 |    200 |
+|   7 | snacks     | grocery   |      5 |     20 |
+|   8 | earbuds    | gadgets   |    500 |     20 |
+|   9 | headphoes  | gadgets   |    600 |     20 |
+|  10 | headphones | gadgets   |    600 |     20 |
+|  11 | watch      | gadgets   |   1000 |     20 |
++-----+------------+-----------+--------+--------+
+11 rows in set (0.04 sec)
+
+mysql> delete from item where ino=9;
+Query OK, 1 row affected (0.06 sec)
+
+mysql> select *  from item;
++-----+------------+-----------+--------+--------+
+| ino | iname      | itype     | iprice | icount |
++-----+------------+-----------+--------+--------+
+|   1 | kitkat     | chocolate |      5 |    100 |
+|   2 | perk       | chocolate |      5 |    200 |
+|   3 | 5star      | chocolate |      5 |     20 |
+|   4 | cadboury   | chocolate |     10 |     20 |
+|   5 | milk       | grocery   |     15 |    100 |
+|   6 | bread      | grocery   |     30 |    200 |
+|   7 | snacks     | grocery   |      5 |     20 |
+|   8 | earbuds    | gadgets   |    500 |     20 |
+|  10 | headphones | gadgets   |    600 |     20 |
+|  11 | watch      | gadgets   |   1000 |     20 |
++-----+------------+-----------+--------+--------+
+10 rows in set (0.00 sec)
+
+
+mysql> delete from item where ino=10;
+Query OK, 1 row affected (0.08 sec)
+
+mysql> delete from item where ino=11;
+Query OK, 1 row affected (0.05 sec)
+
+mysql> select *  from item;
++-----+----------+-----------+--------+--------+
+| ino | iname    | itype     | iprice | icount |
++-----+----------+-----------+--------+--------+
+|   1 | kitkat   | chocolate |      5 |    100 |
+|   2 | perk     | chocolate |      5 |    200 |
+|   3 | 5star    | chocolate |      5 |     20 |
+|   4 | cadboury | chocolate |     10 |     20 |
+|   5 | milk     | grocery   |     15 |    100 |
+|   6 | bread    | grocery   |     30 |    200 |
+|   7 | snacks   | grocery   |      5 |     20 |
+|   8 | earbuds  | gadgets   |    500 |     20 |
++-----+----------+-----------+--------+--------+
+8 rows in set (0.00 sec)
+
+mysql> insert into item values(null,"watch","gadgets",1000,20);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into item values(null,"headphones","gadgets",600,20);
+Query OK, 1 row affected (0.07 sec)
+
+mysql> select *  from item;
++-----+------------+-----------+--------+--------+
+| ino | iname      | itype     | iprice | icount |
++-----+------------+-----------+--------+--------+
+|   1 | kitkat     | chocolate |      5 |    100 |
+|   2 | perk       | chocolate |      5 |    200 |
+|   3 | 5star      | chocolate |      5 |     20 |
+|   4 | cadboury   | chocolate |     10 |     20 |
+|   5 | milk       | grocery   |     15 |    100 |
+|   6 | bread      | grocery   |     30 |    200 |
+|   7 | snacks     | grocery   |      5 |     20 |
+|   8 | earbuds    | gadgets   |    500 |     20 |
+|  12 | watch      | gadgets   |   1000 |     20 |
+|  13 | headphones | gadgets   |    600 |     20 |
++-----+------------+-----------+--------+--------+
+10 rows in set (0.00 sec)
+
+mysql> update item
+    -> set ino=9
+    -> where ino=12;
+Query OK, 1 row affected (0.13 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select *  from item;
++-----+------------+-----------+--------+--------+
+| ino | iname      | itype     | iprice | icount |
++-----+------------+-----------+--------+--------+
+|   1 | kitkat     | chocolate |      5 |    100 |
+|   2 | perk       | chocolate |      5 |    200 |
+|   3 | 5star      | chocolate |      5 |     20 |
+|   4 | cadboury   | chocolate |     10 |     20 |
+|   5 | milk       | grocery   |     15 |    100 |
+|   6 | bread      | grocery   |     30 |    200 |
+|   7 | snacks     | grocery   |      5 |     20 |
+|   8 | earbuds    | gadgets   |    500 |     20 |
+|   9 | watch      | gadgets   |   1000 |     20 |
+|  13 | headphones | gadgets   |    600 |     20 |
++-----+------------+-----------+--------+--------+
+10 rows in set (0.00 sec)
+
+mysql> update item
+    -> set ino=10
+    -> where ino=13;
+Query OK, 1 row affected (0.11 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select *  from item;
++-----+------------+-----------+--------+--------+
+| ino | iname      | itype     | iprice | icount |
++-----+------------+-----------+--------+--------+
+|   1 | kitkat     | chocolate |      5 |    100 |
+|   2 | perk       | chocolate |      5 |    200 |
+|   3 | 5star      | chocolate |      5 |     20 |
+|   4 | cadboury   | chocolate |     10 |     20 |
+|   5 | milk       | grocery   |     15 |    100 |
+|   6 | bread      | grocery   |     30 |    200 |
+|   7 | snacks     | grocery   |      5 |     20 |
+|   8 | earbuds    | gadgets   |    500 |     20 |
+|   9 | watch      | gadgets   |   1000 |     20 |
+|  10 | headphones | gadgets   |    600 |     20 |
++-----+------------+-----------+--------+--------+
+10 rows in set (0.00 sec)
+
+mysql> select *  from customer;
++-----+---------+---------+------------+
+| cno | cname   | ccity   | cmobile    |
++-----+---------+---------+------------+
+|   1 | Srushti | Pune    | 8978675678 |
+|   2 | Shruti  | Nashik  | 8293672678 |
+|   3 | Anshika | Nagpur  | 9876234567 |
+|   4 | Arushi  | Delhi   | 9876237898 |
+|   5 | Rashi   | Mumbai  | 9876722338 |
+|   6 | Raj     | Mumbai  | 9872341338 |
+|   7 | Arunita | Kolkata | 8976234455 |
+|   8 | Shreya  | Kolkata | 8998877655 |
+|   9 | Sham    | Kolkata | 7898564534 |
+|  10 | Shaan   | Kolkata | 7898564594 |
+|  11 | Sam     | Kolkata | 7890564594 |
+|  12 | Madhu   | Latur   | 7899804534 |
+|  13 | Srushti | Latur   | 9999804534 |
+|  14 | Bhushan | Latur   | 9899804534 |
+|  15 | Bhumi   | Beed    | 9776655534 |
++-----+---------+---------+------------+
+15 rows in set (0.05 sec)
+
+mysql> select *  from item;
++-----+------------+-----------+--------+--------+
+| ino | iname      | itype     | iprice | icount |
++-----+------------+-----------+--------+--------+
+|   1 | kitkat     | chocolate |      5 |    100 |
+|   2 | perk       | chocolate |      5 |    200 |
+|   3 | 5star      | chocolate |      5 |     20 |
+|   4 | cadboury   | chocolate |     10 |     20 |
+|   5 | milk       | grocery   |     15 |    100 |
+|   6 | bread      | grocery   |     30 |    200 |
+|   7 | snacks     | grocery   |      5 |     20 |
+|   8 | earbuds    | gadgets   |    500 |     20 |
+|   9 | watch      | gadgets   |   1000 |     20 |
+|  10 | headphones | gadgets   |    600 |     20 |
++-----+------------+-----------+--------+--------+
+10 rows in set (0.00 sec)
+
+mysql> desc purchase;
++-------+------+------+-----+---------+----------------+
+| Field | Type | Null | Key | Default | Extra          |
++-------+------+------+-----+---------+----------------+
+| pno   | int  | NO   | PRI | NULL    | auto_increment |
+| pdate | date | YES  |     | NULL    |                |
+| pqty  | int  | NO   |     | NULL    |                |
++-------+------+------+-----+---------+----------------+
+3 rows in set (0.17 sec)
+
+
+
+mysql> alter table purchase add cno int;
+Query OK, 0 rows affected (0.56 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+mysql> alter table purchase
+    -> add foreign key(cno)
+    -> references customer(cno);
+Query OK, 0 rows affected (1.10 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc purchase;
++-------+------+------+-----+---------+----------------+
+| Field | Type | Null | Key | Default | Extra          |
++-------+------+------+-----+---------+----------------+
+| pno   | int  | NO   | PRI | NULL    | auto_increment |
+| pdate | date | YES  |     | NULL    |                |
+| pqty  | int  | NO   |     | NULL    |                |
+| cno   | int  | YES  | MUL | NULL    |                |
++-------+------+------+-----+---------+----------------+
+4 rows in set (0.00 sec)
+
+
+mysql> alter table purchase
+    -> add ino int;
+Query OK, 0 rows affected (0.16 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table purchase
+    -> add constraint ino foreign key(ino) references item(ino);
+Query OK, 0 rows affected (1.34 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc purchase;
++-------+------+------+-----+---------+----------------+
+| Field | Type | Null | Key | Default | Extra          |
++-------+------+------+-----+---------+----------------+
+| pno   | int  | NO   | PRI | NULL    | auto_increment |
+| pdate | date | YES  |     | NULL    |                |
+| pqty  | int  | NO   |     | NULL    |                |
+| cno   | int  | YES  | MUL | NULL    |                |
+| ino   | int  | YES  | MUL | NULL    |                |
++-------+------+------+-----+---------+----------------+
+5 rows in set (0.06 sec)
+
+
+
+mysql> alter table purchase drop column ino;
+ERROR 1828 (HY000): Cannot drop column 'ino': needed in a foreign key constraint 'ino'
+mysql> alter table purchase drop foreign key ino;
+Query OK, 0 rows affected (0.10 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc purchase;
++-------+------+------+-----+---------+----------------+
+| Field | Type | Null | Key | Default | Extra          |
++-------+------+------+-----+---------+----------------+
+| pno   | int  | NO   | PRI | NULL    | auto_increment |
+| pdate | date | YES  |     | NULL    |                |
+| pqty  | int  | NO   |     | NULL    |                |
+| cno   | int  | YES  | MUL | NULL    |                |
+| ino   | int  | YES  | MUL | NULL    |                |
++-------+------+------+-----+---------+----------------+
+5 rows in set (0.11 sec)
+
+mysql> alter table purchase drop ino;
+Query OK, 0 rows affected (1.45 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc purchase;
++-------+------+------+-----+---------+----------------+
+| Field | Type | Null | Key | Default | Extra          |
++-------+------+------+-----+---------+----------------+
+| pno   | int  | NO   | PRI | NULL    | auto_increment |
+| pdate | date | YES  |     | NULL    |                |
+| pqty  | int  | NO   |     | NULL    |                |
+| cno   | int  | YES  | MUL | NULL    |                |
++-------+------+------+-----+---------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> alter table purchase modify pqty bigint;
+Query OK, 0 rows affected (1.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc purchase;
++-------+--------+------+-----+---------+----------------+
+| Field | Type   | Null | Key | Default | Extra          |
++-------+--------+------+-----+---------+----------------+
+| pno   | int    | NO   | PRI | NULL    | auto_increment |
+| pdate | date   | YES  |     | NULL    |                |
+| pqty  | bigint | YES  |     | NULL    |                |
+| cno   | int    | YES  | MUL | NULL    |                |
++-------+--------+------+-----+---------+----------------+
+4 rows in set (0.12 sec)
+
+
+
+*********  Query 2  ********-------------------------------------------------------------------------
+
+mysql> desc purchase;
++-------+--------+------+-----+---------+----------------+
+| Field | Type   | Null | Key | Default | Extra          |
++-------+--------+------+-----+---------+----------------+
+| pno   | int    | NO   | PRI | NULL    | auto_increment |
+| pdate | date   | YES  |     | NULL    |                |
+| pqty  | bigint | YES  |     | NULL    |                |
+| cno   | int    | YES  | MUL | NULL    |                |
++-------+--------+------+-----+---------+----------------+
+4 rows in set (0.04 sec)
+
+mysql> select * from purchase;
+Empty set (0.05 sec)
+
+
+mysql> insert into purchase values(null,23/01/2001,12,1);
+Query OK, 1 row affected (0.09 sec)
+
+mysql> select * from purchase;
++-----+------------+------+------+
+| pno | pdate      | pqty | cno  |
++-----+------------+------+------+
+|   1 | 0000-00-00 |   12 |    1 |
++-----+------------+------+------+
+1 row in set (0.00 sec)
+
+
+mysql> insert into purchase values(null,date '2001-02-12',12,1);
+Query OK, 1 row affected (0.09 sec)
+
+mysql> select * from purchase;
++-----+------------+------+------+
+| pno | pdate      | pqty | cno  |
++-----+------------+------+------+
+|   1 | 0000-00-00 |   12 |    1 |
+|   2 | 2001-02-12 |   12 |    1 |
++-----+------------+------+------+
+2 rows in set (0.00 sec)
+
+mysql> insert into purchase values(null,date '2001-02-22',122,4);
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into purchase values(null,date '2001-06-22',122,5);
+Query OK, 1 row affected (0.09 sec)
+
+mysql> insert into purchase values(null,date '2001-06-02',12,7);
+Query OK, 1 row affected (0.17 sec)
+
+mysql> insert into purchase values(null,date '2001-06-10',12,8);
+Query OK, 1 row affected (0.07 sec)
+
+mysql> insert into purchase values(null,date '2013-10-12',12,13);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> select * from purchase;
++-----+------------+------+------+
+| pno | pdate      | pqty | cno  |
++-----+------------+------+------+
+|   1 | 0000-00-00 |   12 |    1 |
+|   2 | 2001-02-12 |   12 |    1 |
+|   3 | 2001-02-22 |  122 |    4 |
+|   4 | 2001-06-22 |  122 |    5 |
+|   5 | 2001-06-02 |   12 |    7 |
+|   6 | 2001-06-10 |   12 |    8 |
+|   7 | 2013-10-12 |   12 |   13 |
++-----+------------+------+------+
+7 rows in set (0.00 sec)
+
+mysql> insert into purchase values(null,date '2018-10-12',12,15);
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into purchase values(null,date '2018-10-12',12,15);
+Query OK, 1 row affected (0.09 sec)
+
+mysql> insert into purchase values(null,date '2021-12-12',12,16);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`cummins`.`purchase`, CONSTRAINT `purchase_ibfk_1` FOREIGN KEY (`cno`) REFERENCES `customer` (`cno`))
+mysql> insert into purchase values(null,date '2021-12-12',12,11);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> select * from purchase;
++-----+------------+------+------+
+| pno | pdate      | pqty | cno  |
++-----+------------+------+------+
+|   1 | 0000-00-00 |   12 |    1 |
+|   2 | 2001-02-12 |   12 |    1 |
+|   3 | 2001-02-22 |  122 |    4 |
+|   4 | 2001-06-22 |  122 |    5 |
+|   5 | 2001-06-02 |   12 |    7 |
+|   6 | 2001-06-10 |   12 |    8 |
+|   7 | 2013-10-12 |   12 |   13 |
+|   8 | 2018-10-12 |   12 |   15 |
+|   9 | 2018-10-12 |   12 |   15 |
+|  11 | 2021-12-12 |   12 |   11 |
++-----+------------+------+------+
+10 rows in set (0.00 sec)
+
+
+
+********    Query 3 - drop database, table, column   *******-------------------------------------------------------
+
+mysql> use d;
+Database changed
+mysql> show tables;
+Empty set (0.00 sec)
+
+mysql> create table emp(eid int primary key ,ename varchar(20));
+Query OK, 0 rows affected (0.72 sec)
+
+mysql> show tables;
++-------------+
+| Tables_in_d |
++-------------+
+| emp         |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> desc emp;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| eid   | int         | NO   | PRI | NULL    |       |
+| ename | varchar(20) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.08 sec)
+
+mysql> alter table emp  drop column ename;
+Query OK, 0 rows affected (0.65 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc emp;
++-------+------+------+-----+---------+-------+
+| Field | Type | Null | Key | Default | Extra |
++-------+------+------+-----+---------+-------+
+| eid   | int  | NO   | PRI | NULL    |       |
++-------+------+------+-----+---------+-------+
+1 row in set (0.05 sec)
+
+mysql> drop table emp;
+Query OK, 0 rows affected (0.43 sec)
+
+mysql> show tables;
+Empty set (0.00 sec)
+
+mysql> drop database d;
+Query OK, 0 rows affected (0.26 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| cummins            |
+| information_schema |
+| jio                |
+| mysql              |
+| performance_schema |
+| ppc                |
+| sys                |
++--------------------+
+7 rows in set (0.06 sec)
+
+mysql>
