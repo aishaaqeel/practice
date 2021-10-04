@@ -1,0 +1,699 @@
+-------------------------------
+
+
+Roll No: 3460
+Name: Srushti Sulgudle
+CNumber: C22019221459
+Assignment No :3
+
+
+
+mysql> use cummins;
+Database changed
+mysql> select * from item;
++-----+------------+-----------+--------+--------+
+| ino | iname      | itype     | iprice | icount |
++-----+------------+-----------+--------+--------+
+|   2 | perk       | chocolate |     18 |    195 |
+|   3 | 5star      | chocolate |     18 |     15 |
+|   4 | cadboury   | chocolate |     23 |     15 |
+|   5 | milk       | grocery   |     29 |     95 |
+|   6 | bread      | grocery   |     45 |    195 |
+|   7 | snacks     | grocery   |     18 |     15 |
+|   8 | earbuds    | gadgets   |    511 |     15 |
+|   9 | watch      | gadgets   |    581 |     15 |
+|  10 | headphones | gadgets   |    611 |     15 |
++-----+------------+-----------+--------+--------+
+9 rows in set (0.00 sec)
+
+mysql> select * from purchase;
++-----+------------+------+-----+------+
+| pno | pdate      | pqty | cno | ino  |
++-----+------------+------+-----+------+
+|   1 | 2021-09-17 |   12 |   1 |    2 |
+|   2 | 2001-02-12 |   12 |   1 |    3 |
+|   3 | 2001-02-22 |  122 |   4 |    5 |
+|   4 | 2001-06-22 |  122 |   5 |   10 |
+|   5 | 2001-06-02 |   12 |   7 |    5 |
+|   6 | 2001-06-10 |   12 |   8 |   10 |
+|   7 | 2013-10-12 |   12 |  13 |    8 |
+|   8 | 2018-10-12 |   12 |  15 |    8 |
+|   9 | 2018-10-12 |   12 |  15 |    6 |
+|  11 | 2021-12-12 |   12 |  11 |    4 |
+|  12 | 2021-02-22 |  100 |  10 |    4 |
+|  13 | 2022-12-02 |   15 |  10 |    7 |
++-----+------------+------+-----+------+
+12 rows in set (0.00 sec)
+
+mysql> select * from customer;
++-----+---------+---------+------------+
+| cno | cname   | ccity   | cmobile    |
++-----+---------+---------+------------+
+|   1 | Srushti | Pune    | 8978675678 |
+|   3 | Anshika | Nagpur  | 9876234567 |
+|   4 | Arushi  | Delhi   | 9876237898 |
+|   5 | Rashi   | Mumbai  | 9876722338 |
+|   6 | Raj     | Mumbai  | 9872341338 |
+|   7 | Arunita | Kolkata | 8976234455 |
+|   8 | Shreya  | Kolkata | 8998877655 |
+|   9 | Sham    | Kolkata | 7898564534 |
+|  10 | Shaan   | Kolkata | 7898564594 |
+|  11 | Sam     | Kolkata | 7890564594 |
+|  12 | Madhu   | Latur   | 7899804534 |
+|  13 | Srushti | Latur   | 9999804534 |
+|  14 | Bhushan | Latur   | 9899804534 |
+|  15 | Bhumi   | Beed    | 9776655534 |
++-----+---------+---------+------------+
+
+
+1)
+
+
+mysql> select cname,iname from customer,item inner join purchase where purchase.cno=customer.cno and purchase.ino=item.ino;
+
+or
+mysql> select customer.cname,item.iname from (( customer inner join purchase on customer.cno=purchase.cno) inner join item on item.ino=purchase.ino);
+
++---------+------------+
+| cname   | iname      |
++---------+------------+
+| Srushti | perk       |
+| Srushti | 5star      |
+| Arushi  | milk       |
+| Rashi   | headphones |
+| Arunita | milk       |
+| Shreya  | headphones |
+| Srushti | earbuds    |
+| Bhumi   | earbuds    |
+| Bhumi   | bread      |
+| Sam     | cadboury   |
+| Shaan   | cadboury   |
+| Shaan   | snacks     |
++---------+------------+
+12 rows in set (0.00 sec)
+
+
+2)
+
+mysql> select cname,pno,pdate,pqty from customer left join purchase on purchase.cno=customer.cno;
++---------+------+------------+------+
+| cname   | pno  | pdate      | pqty |
++---------+------+------------+------+
+| Srushti |    1 | 2021-09-17 |   12 |
+| Srushti |    2 | 2001-02-12 |   12 |
+| Anshika | NULL | NULL       | NULL |
+| Arushi  |    3 | 2001-02-22 |  122 |
+| Rashi   |    4 | 2001-06-22 |  122 |
+| Raj     | NULL | NULL       | NULL |
+| Arunita |    5 | 2001-06-02 |   12 |
+| Shreya  |    6 | 2001-06-10 |   12 |
+| Sham    | NULL | NULL       | NULL |
+| Shaan   |   12 | 2021-02-22 |  100 |
+| Shaan   |   13 | 2022-12-02 |   15 |
+| Sam     |   11 | 2021-12-12 |   12 |
+| Madhu   | NULL | NULL       | NULL |
+| Srushti |    7 | 2013-10-12 |   12 |
+| Bhushan | NULL | NULL       | NULL |
+| Bhumi   |    8 | 2018-10-12 |   12 |
+| Bhumi   |    9 | 2018-10-12 |   12 |
++---------+------+------------+------+
+17 rows in set (0.00 sec)
+
+
+3) 
+
+mysql> select * from customer inner join purchase on customer.cno=purchase.cno;
++-----+---------+---------+------------+-----+------------+------+-----+------+
+| cno | cname   | ccity   | cmobile    | pno | pdate      | pqty | cno | ino  |
++-----+---------+---------+------------+-----+------------+------+-----+------+
+|   1 | Srushti | Pune    | 8978675678 |   1 | 2021-09-17 |   12 |   1 |    2 |
+|   1 | Srushti | Pune    | 8978675678 |   2 | 2001-02-12 |   12 |   1 |    3 |
+|   4 | Arushi  | Delhi   | 9876237898 |   3 | 2001-02-22 |  122 |   4 |    5 |
+|   5 | Rashi   | Mumbai  | 9876722338 |   4 | 2001-06-22 |  122 |   5 |   10 |
+|   7 | Arunita | Kolkata | 8976234455 |   5 | 2001-06-02 |   12 |   7 |    5 |
+|   8 | Shreya  | Kolkata | 8998877655 |   6 | 2001-06-10 |   12 |   8 |   10 |
+|  13 | Srushti | Latur   | 9999804534 |   7 | 2013-10-12 |   12 |  13 |    8 |
+|  15 | Bhumi   | Beed    | 9776655534 |   8 | 2018-10-12 |   12 |  15 |    8 |
+|  15 | Bhumi   | Beed    | 9776655534 |   9 | 2018-10-12 |   12 |  15 |    6 |
+|  11 | Sam     | Kolkata | 7890564594 |  11 | 2021-12-12 |   12 |  11 |    4 |
+|  10 | Shaan   | Pune    | 7898564594 |  12 | 2021-02-22 |  100 |  10 |    4 |
+|  10 | Shaan   | Pune    | 7898564594 |  13 | 2022-12-02 |   15 |  10 |    7 |
++-----+---------+---------+------------+-----+------------+------+-----+------+
+12 rows in set (0.00 sec)
+
+4)
+
+mysql> select * from customer left join purchase on customer.cno=purchase.cno;
++-----+---------+---------+------------+------+------------+------+------+------+
+| cno | cname   | ccity   | cmobile    | pno  | pdate      | pqty | cno  | ino  |
++-----+---------+---------+------------+------+------------+------+------+------+
+|   1 | Srushti | Pune    | 8978675678 |    1 | 2021-09-17 |   12 |    1 |    2 |
+|   1 | Srushti | Pune    | 8978675678 |    2 | 2001-02-12 |   12 |    1 |    3 |
+|   3 | Anshika | Nagpur  | 9876234567 | NULL | NULL       | NULL | NULL | NULL |
+|   4 | Arushi  | Delhi   | 9876237898 |    3 | 2001-02-22 |  122 |    4 |    5 |
+|   5 | Rashi   | Mumbai  | 9876722338 |    4 | 2001-06-22 |  122 |    5 |   10 |
+|   6 | Raj     | Mumbai  | 9872341338 | NULL | NULL       | NULL | NULL | NULL |
+|   7 | Arunita | Kolkata | 8976234455 |    5 | 2001-06-02 |   12 |    7 |    5 |
+|   8 | Shreya  | Kolkata | 8998877655 |    6 | 2001-06-10 |   12 |    8 |   10 |
+|   9 | Sham    | Kolkata | 7898564534 | NULL | NULL       | NULL | NULL | NULL |
+|  10 | Shaan   | Kolkata | 7898564594 |   12 | 2021-02-22 |  100 |   10 |    4 |
+|  10 | Shaan   | Kolkata | 7898564594 |   13 | 2022-12-02 |   15 |   10 |    7 |
+|  11 | Sam     | Kolkata | 7890564594 |   11 | 2021-12-12 |   12 |   11 |    4 |
+|  12 | Madhu   | Latur   | 7899804534 | NULL | NULL       | NULL | NULL | NULL |
+|  13 | Srushti | Latur   | 9999804534 |    7 | 2013-10-12 |   12 |   13 |    8 |
+|  14 | Bhushan | Latur   | 9899804534 | NULL | NULL       | NULL | NULL | NULL |
+|  15 | Bhumi   | Beed    | 9776655534 |    8 | 2018-10-12 |   12 |   15 |    8 |
+|  15 | Bhumi   | Beed    | 9776655534 |    9 | 2018-10-12 |   12 |   15 |    6 |
++-----+---------+---------+------------+------+------------+------+------+------+
+17 rows in set (0.00 sec)
+
+5)
+
+
+mysql> select * from customer right join purchase on customer.cno=purchase.cno;
++------+---------+---------+------------+-----+------------+------+-----+------+
+| cno  | cname   | ccity   | cmobile    | pno | pdate      | pqty | cno | ino  |
++------+---------+---------+------------+-----+------------+------+-----+------+
+|    1 | Srushti | Pune    | 8978675678 |   1 | 2021-09-17 |   12 |   1 |    2 |
+|    1 | Srushti | Pune    | 8978675678 |   2 | 2001-02-12 |   12 |   1 |    3 |
+|    4 | Arushi  | Delhi   | 9876237898 |   3 | 2001-02-22 |  122 |   4 |    5 |
+|    5 | Rashi   | Mumbai  | 9876722338 |   4 | 2001-06-22 |  122 |   5 |   10 |
+|    7 | Arunita | Kolkata | 8976234455 |   5 | 2001-06-02 |   12 |   7 |    5 |
+|    8 | Shreya  | Kolkata | 8998877655 |   6 | 2001-06-10 |   12 |   8 |   10 |
+|   13 | Srushti | Latur   | 9999804534 |   7 | 2013-10-12 |   12 |  13 |    8 |
+|   15 | Bhumi   | Beed    | 9776655534 |   8 | 2018-10-12 |   12 |  15 |    8 |
+|   15 | Bhumi   | Beed    | 9776655534 |   9 | 2018-10-12 |   12 |  15 |    6 |
+|   11 | Sam     | Kolkata | 7890564594 |  11 | 2021-12-12 |   12 |  11 |    4 |
+|   10 | Shaan   | Kolkata | 7898564594 |  12 | 2021-02-22 |  100 |  10 |    4 |
+|   10 | Shaan   | Kolkata | 7898564594 |  13 | 2022-12-02 |   15 |  10 |    7 |
++------+---------+---------+------------+-----+------------+------+-----+------+
+12 rows in set (0.00 sec)
+
+
+6)
+
+mysql> select * from customer full join purchase;
++-----+---------+---------+------------+-----+------------+------+-----+------+
+| cno | cname   | ccity   | cmobile    | pno | pdate      | pqty | cno | ino  |
++-----+---------+---------+------------+-----+------------+------+-----+------+
+|   1 | Srushti | Pune    | 8978675678 |   1 | 2021-09-17 |   12 |   1 |    2 |
+|   1 | Srushti | Pune    | 8978675678 |   2 | 2001-02-12 |   12 |   1 |    3 |
+|   1 | Srushti | Pune    | 8978675678 |   3 | 2001-02-22 |  122 |   4 |    5 |
+|   1 | Srushti | Pune    | 8978675678 |   4 | 2001-06-22 |  122 |   5 |   10 |
+|   1 | Srushti | Pune    | 8978675678 |   5 | 2001-06-02 |   12 |   7 |    5 |
+|   1 | Srushti | Pune    | 8978675678 |   6 | 2001-06-10 |   12 |   8 |   10 |
+|   1 | Srushti | Pune    | 8978675678 |   7 | 2013-10-12 |   12 |  13 |    8 |
+|   1 | Srushti | Pune    | 8978675678 |   8 | 2018-10-12 |   12 |  15 |    8 |
+|   1 | Srushti | Pune    | 8978675678 |   9 | 2018-10-12 |   12 |  15 |    6 |
+|   1 | Srushti | Pune    | 8978675678 |  11 | 2021-12-12 |   12 |  11 |    4 |
+|   1 | Srushti | Pune    | 8978675678 |  12 | 2021-02-22 |  100 |  10 |    4 |
+|   1 | Srushti | Pune    | 8978675678 |  13 | 2022-12-02 |   15 |  10 |    7 |
+|   3 | Anshika | Nagpur  | 9876234567 |   1 | 2021-09-17 |   12 |   1 |    2 |
+|   3 | Anshika | Nagpur  | 9876234567 |   2 | 2001-02-12 |   12 |   1 |    3 |
+|   3 | Anshika | Nagpur  | 9876234567 |   3 | 2001-02-22 |  122 |   4 |    5 |
+|   3 | Anshika | Nagpur  | 9876234567 |   4 | 2001-06-22 |  122 |   5 |   10 |
+|   3 | Anshika | Nagpur  | 9876234567 |   5 | 2001-06-02 |   12 |   7 |    5 |
+|   3 | Anshika | Nagpur  | 9876234567 |   6 | 2001-06-10 |   12 |   8 |   10 |
+|   3 | Anshika | Nagpur  | 9876234567 |   7 | 2013-10-12 |   12 |  13 |    8 |
+|   3 | Anshika | Nagpur  | 9876234567 |   8 | 2018-10-12 |   12 |  15 |    8 |
+|   3 | Anshika | Nagpur  | 9876234567 |   9 | 2018-10-12 |   12 |  15 |    6 |
+|   3 | Anshika | Nagpur  | 9876234567 |  11 | 2021-12-12 |   12 |  11 |    4 |
+|   3 | Anshika | Nagpur  | 9876234567 |  12 | 2021-02-22 |  100 |  10 |    4 |
+|   3 | Anshika | Nagpur  | 9876234567 |  13 | 2022-12-02 |   15 |  10 |    7 |
+|   4 | Arushi  | Delhi   | 9876237898 |   1 | 2021-09-17 |   12 |   1 |    2 |
+|   4 | Arushi  | Delhi   | 9876237898 |   2 | 2001-02-12 |   12 |   1 |    3 |
+|   4 | Arushi  | Delhi   | 9876237898 |   3 | 2001-02-22 |  122 |   4 |    5 |
+|   4 | Arushi  | Delhi   | 9876237898 |   4 | 2001-06-22 |  122 |   5 |   10 |
+|   4 | Arushi  | Delhi   | 9876237898 |   5 | 2001-06-02 |   12 |   7 |    5 |
+|   4 | Arushi  | Delhi   | 9876237898 |   6 | 2001-06-10 |   12 |   8 |   10 |
+|   4 | Arushi  | Delhi   | 9876237898 |   7 | 2013-10-12 |   12 |  13 |    8 |
+|   4 | Arushi  | Delhi   | 9876237898 |   8 | 2018-10-12 |   12 |  15 |    8 |
+|   4 | Arushi  | Delhi   | 9876237898 |   9 | 2018-10-12 |   12 |  15 |    6 |
+|   4 | Arushi  | Delhi   | 9876237898 |  11 | 2021-12-12 |   12 |  11 |    4 |
+|   4 | Arushi  | Delhi   | 9876237898 |  12 | 2021-02-22 |  100 |  10 |    4 |
+|   4 | Arushi  | Delhi   | 9876237898 |  13 | 2022-12-02 |   15 |  10 |    7 |
+|   5 | Rashi   | Mumbai  | 9876722338 |   1 | 2021-09-17 |   12 |   1 |    2 |
+|   5 | Rashi   | Mumbai  | 9876722338 |   2 | 2001-02-12 |   12 |   1 |    3 |
+|   5 | Rashi   | Mumbai  | 9876722338 |   3 | 2001-02-22 |  122 |   4 |    5 |
+|   5 | Rashi   | Mumbai  | 9876722338 |   4 | 2001-06-22 |  122 |   5 |   10 |
+|   5 | Rashi   | Mumbai  | 9876722338 |   5 | 2001-06-02 |   12 |   7 |    5 |
+|   5 | Rashi   | Mumbai  | 9876722338 |   6 | 2001-06-10 |   12 |   8 |   10 |
+|   5 | Rashi   | Mumbai  | 9876722338 |   7 | 2013-10-12 |   12 |  13 |    8 |
+|   5 | Rashi   | Mumbai  | 9876722338 |   8 | 2018-10-12 |   12 |  15 |    8 |
+|   5 | Rashi   | Mumbai  | 9876722338 |   9 | 2018-10-12 |   12 |  15 |    6 |
+|   5 | Rashi   | Mumbai  | 9876722338 |  11 | 2021-12-12 |   12 |  11 |    4 |
+|   5 | Rashi   | Mumbai  | 9876722338 |  12 | 2021-02-22 |  100 |  10 |    4 |
+|   5 | Rashi   | Mumbai  | 9876722338 |  13 | 2022-12-02 |   15 |  10 |    7 |
+|   6 | Raj     | Mumbai  | 9872341338 |   1 | 2021-09-17 |   12 |   1 |    2 |
+|   6 | Raj     | Mumbai  | 9872341338 |   2 | 2001-02-12 |   12 |   1 |    3 |
+|   6 | Raj     | Mumbai  | 9872341338 |   3 | 2001-02-22 |  122 |   4 |    5 |
+|   6 | Raj     | Mumbai  | 9872341338 |   4 | 2001-06-22 |  122 |   5 |   10 |
+|   6 | Raj     | Mumbai  | 9872341338 |   5 | 2001-06-02 |   12 |   7 |    5 |
+|   6 | Raj     | Mumbai  | 9872341338 |   6 | 2001-06-10 |   12 |   8 |   10 |
+|   6 | Raj     | Mumbai  | 9872341338 |   7 | 2013-10-12 |   12 |  13 |    8 |
+|   6 | Raj     | Mumbai  | 9872341338 |   8 | 2018-10-12 |   12 |  15 |    8 |
+|   6 | Raj     | Mumbai  | 9872341338 |   9 | 2018-10-12 |   12 |  15 |    6 |
+|   6 | Raj     | Mumbai  | 9872341338 |  11 | 2021-12-12 |   12 |  11 |    4 |
+|   6 | Raj     | Mumbai  | 9872341338 |  12 | 2021-02-22 |  100 |  10 |    4 |
+|   6 | Raj     | Mumbai  | 9872341338 |  13 | 2022-12-02 |   15 |  10 |    7 |
+|   7 | Arunita | Kolkata | 8976234455 |   1 | 2021-09-17 |   12 |   1 |    2 |
+|   7 | Arunita | Kolkata | 8976234455 |   2 | 2001-02-12 |   12 |   1 |    3 |
+|   7 | Arunita | Kolkata | 8976234455 |   3 | 2001-02-22 |  122 |   4 |    5 |
+|   7 | Arunita | Kolkata | 8976234455 |   4 | 2001-06-22 |  122 |   5 |   10 |
+|   7 | Arunita | Kolkata | 8976234455 |   5 | 2001-06-02 |   12 |   7 |    5 |
+|   7 | Arunita | Kolkata | 8976234455 |   6 | 2001-06-10 |   12 |   8 |   10 |
+|   7 | Arunita | Kolkata | 8976234455 |   7 | 2013-10-12 |   12 |  13 |    8 |
+|   7 | Arunita | Kolkata | 8976234455 |   8 | 2018-10-12 |   12 |  15 |    8 |
+|   7 | Arunita | Kolkata | 8976234455 |   9 | 2018-10-12 |   12 |  15 |    6 |
+|   7 | Arunita | Kolkata | 8976234455 |  11 | 2021-12-12 |   12 |  11 |    4 |
+|   7 | Arunita | Kolkata | 8976234455 |  12 | 2021-02-22 |  100 |  10 |    4 |
+|   7 | Arunita | Kolkata | 8976234455 |  13 | 2022-12-02 |   15 |  10 |    7 |
+|   8 | Shreya  | Kolkata | 8998877655 |   1 | 2021-09-17 |   12 |   1 |    2 |
+|   8 | Shreya  | Kolkata | 8998877655 |   2 | 2001-02-12 |   12 |   1 |    3 |
+|   8 | Shreya  | Kolkata | 8998877655 |   3 | 2001-02-22 |  122 |   4 |    5 |
+|   8 | Shreya  | Kolkata | 8998877655 |   4 | 2001-06-22 |  122 |   5 |   10 |
+|   8 | Shreya  | Kolkata | 8998877655 |   5 | 2001-06-02 |   12 |   7 |    5 |
+|   8 | Shreya  | Kolkata | 8998877655 |   6 | 2001-06-10 |   12 |   8 |   10 |
+|   8 | Shreya  | Kolkata | 8998877655 |   7 | 2013-10-12 |   12 |  13 |    8 |
+|   8 | Shreya  | Kolkata | 8998877655 |   8 | 2018-10-12 |   12 |  15 |    8 |
+|   8 | Shreya  | Kolkata | 8998877655 |   9 | 2018-10-12 |   12 |  15 |    6 |
+|   8 | Shreya  | Kolkata | 8998877655 |  11 | 2021-12-12 |   12 |  11 |    4 |
+|   8 | Shreya  | Kolkata | 8998877655 |  12 | 2021-02-22 |  100 |  10 |    4 |
+|   8 | Shreya  | Kolkata | 8998877655 |  13 | 2022-12-02 |   15 |  10 |    7 |
+|   9 | Sham    | Kolkata | 7898564534 |   1 | 2021-09-17 |   12 |   1 |    2 |
+|   9 | Sham    | Kolkata | 7898564534 |   2 | 2001-02-12 |   12 |   1 |    3 |
+|   9 | Sham    | Kolkata | 7898564534 |   3 | 2001-02-22 |  122 |   4 |    5 |
+|   9 | Sham    | Kolkata | 7898564534 |   4 | 2001-06-22 |  122 |   5 |   10 |
+|   9 | Sham    | Kolkata | 7898564534 |   5 | 2001-06-02 |   12 |   7 |    5 |
+|   9 | Sham    | Kolkata | 7898564534 |   6 | 2001-06-10 |   12 |   8 |   10 |
+|   9 | Sham    | Kolkata | 7898564534 |   7 | 2013-10-12 |   12 |  13 |    8 |
+|   9 | Sham    | Kolkata | 7898564534 |   8 | 2018-10-12 |   12 |  15 |    8 |
+|   9 | Sham    | Kolkata | 7898564534 |   9 | 2018-10-12 |   12 |  15 |    6 |
+|   9 | Sham    | Kolkata | 7898564534 |  11 | 2021-12-12 |   12 |  11 |    4 |
+|   9 | Sham    | Kolkata | 7898564534 |  12 | 2021-02-22 |  100 |  10 |    4 |
+|   9 | Sham    | Kolkata | 7898564534 |  13 | 2022-12-02 |   15 |  10 |    7 |
+|  10 | Shaan   | Kolkata | 7898564594 |   1 | 2021-09-17 |   12 |   1 |    2 |
+|  10 | Shaan   | Kolkata | 7898564594 |   2 | 2001-02-12 |   12 |   1 |    3 |
+|  10 | Shaan   | Kolkata | 7898564594 |   3 | 2001-02-22 |  122 |   4 |    5 |
+|  10 | Shaan   | Kolkata | 7898564594 |   4 | 2001-06-22 |  122 |   5 |   10 |
+|  10 | Shaan   | Kolkata | 7898564594 |   5 | 2001-06-02 |   12 |   7 |    5 |
+|  10 | Shaan   | Kolkata | 7898564594 |   6 | 2001-06-10 |   12 |   8 |   10 |
+|  10 | Shaan   | Kolkata | 7898564594 |   7 | 2013-10-12 |   12 |  13 |    8 |
+|  10 | Shaan   | Kolkata | 7898564594 |   8 | 2018-10-12 |   12 |  15 |    8 |
+|  10 | Shaan   | Kolkata | 7898564594 |   9 | 2018-10-12 |   12 |  15 |    6 |
+|  10 | Shaan   | Kolkata | 7898564594 |  11 | 2021-12-12 |   12 |  11 |    4 |
+|  10 | Shaan   | Kolkata | 7898564594 |  12 | 2021-02-22 |  100 |  10 |    4 |
+|  10 | Shaan   | Kolkata | 7898564594 |  13 | 2022-12-02 |   15 |  10 |    7 |
+|  11 | Sam     | Kolkata | 7890564594 |   1 | 2021-09-17 |   12 |   1 |    2 |
+|  11 | Sam     | Kolkata | 7890564594 |   2 | 2001-02-12 |   12 |   1 |    3 |
+|  11 | Sam     | Kolkata | 7890564594 |   3 | 2001-02-22 |  122 |   4 |    5 |
+|  11 | Sam     | Kolkata | 7890564594 |   4 | 2001-06-22 |  122 |   5 |   10 |
+|  11 | Sam     | Kolkata | 7890564594 |   5 | 2001-06-02 |   12 |   7 |    5 |
+|  11 | Sam     | Kolkata | 7890564594 |   6 | 2001-06-10 |   12 |   8 |   10 |
+|  11 | Sam     | Kolkata | 7890564594 |   7 | 2013-10-12 |   12 |  13 |    8 |
+|  11 | Sam     | Kolkata | 7890564594 |   8 | 2018-10-12 |   12 |  15 |    8 |
+|  11 | Sam     | Kolkata | 7890564594 |   9 | 2018-10-12 |   12 |  15 |    6 |
+|  11 | Sam     | Kolkata | 7890564594 |  11 | 2021-12-12 |   12 |  11 |    4 |
+|  11 | Sam     | Kolkata | 7890564594 |  12 | 2021-02-22 |  100 |  10 |    4 |
+|  11 | Sam     | Kolkata | 7890564594 |  13 | 2022-12-02 |   15 |  10 |    7 |
+|  12 | Madhu   | Latur   | 7899804534 |   1 | 2021-09-17 |   12 |   1 |    2 |
+|  12 | Madhu   | Latur   | 7899804534 |   2 | 2001-02-12 |   12 |   1 |    3 |
+|  12 | Madhu   | Latur   | 7899804534 |   3 | 2001-02-22 |  122 |   4 |    5 |
+|  12 | Madhu   | Latur   | 7899804534 |   4 | 2001-06-22 |  122 |   5 |   10 |
+|  12 | Madhu   | Latur   | 7899804534 |   5 | 2001-06-02 |   12 |   7 |    5 |
+|  12 | Madhu   | Latur   | 7899804534 |   6 | 2001-06-10 |   12 |   8 |   10 |
+|  12 | Madhu   | Latur   | 7899804534 |   7 | 2013-10-12 |   12 |  13 |    8 |
+|  12 | Madhu   | Latur   | 7899804534 |   8 | 2018-10-12 |   12 |  15 |    8 |
+|  12 | Madhu   | Latur   | 7899804534 |   9 | 2018-10-12 |   12 |  15 |    6 |
+|  12 | Madhu   | Latur   | 7899804534 |  11 | 2021-12-12 |   12 |  11 |    4 |
+|  12 | Madhu   | Latur   | 7899804534 |  12 | 2021-02-22 |  100 |  10 |    4 |
+|  12 | Madhu   | Latur   | 7899804534 |  13 | 2022-12-02 |   15 |  10 |    7 |
+|  13 | Srushti | Latur   | 9999804534 |   1 | 2021-09-17 |   12 |   1 |    2 |
+|  13 | Srushti | Latur   | 9999804534 |   2 | 2001-02-12 |   12 |   1 |    3 |
+|  13 | Srushti | Latur   | 9999804534 |   3 | 2001-02-22 |  122 |   4 |    5 |
+|  13 | Srushti | Latur   | 9999804534 |   4 | 2001-06-22 |  122 |   5 |   10 |
+|  13 | Srushti | Latur   | 9999804534 |   5 | 2001-06-02 |   12 |   7 |    5 |
+|  13 | Srushti | Latur   | 9999804534 |   6 | 2001-06-10 |   12 |   8 |   10 |
+|  13 | Srushti | Latur   | 9999804534 |   7 | 2013-10-12 |   12 |  13 |    8 |
+|  13 | Srushti | Latur   | 9999804534 |   8 | 2018-10-12 |   12 |  15 |    8 |
+|  13 | Srushti | Latur   | 9999804534 |   9 | 2018-10-12 |   12 |  15 |    6 |
+|  13 | Srushti | Latur   | 9999804534 |  11 | 2021-12-12 |   12 |  11 |    4 |
+|  13 | Srushti | Latur   | 9999804534 |  12 | 2021-02-22 |  100 |  10 |    4 |
+|  13 | Srushti | Latur   | 9999804534 |  13 | 2022-12-02 |   15 |  10 |    7 |
+|  14 | Bhushan | Latur   | 9899804534 |   1 | 2021-09-17 |   12 |   1 |    2 |
+|  14 | Bhushan | Latur   | 9899804534 |   2 | 2001-02-12 |   12 |   1 |    3 |
+|  14 | Bhushan | Latur   | 9899804534 |   3 | 2001-02-22 |  122 |   4 |    5 |
+|  14 | Bhushan | Latur   | 9899804534 |   4 | 2001-06-22 |  122 |   5 |   10 |
+|  14 | Bhushan | Latur   | 9899804534 |   5 | 2001-06-02 |   12 |   7 |    5 |
+|  14 | Bhushan | Latur   | 9899804534 |   6 | 2001-06-10 |   12 |   8 |   10 |
+|  14 | Bhushan | Latur   | 9899804534 |   7 | 2013-10-12 |   12 |  13 |    8 |
+|  14 | Bhushan | Latur   | 9899804534 |   8 | 2018-10-12 |   12 |  15 |    8 |
+|  14 | Bhushan | Latur   | 9899804534 |   9 | 2018-10-12 |   12 |  15 |    6 |
+|  14 | Bhushan | Latur   | 9899804534 |  11 | 2021-12-12 |   12 |  11 |    4 |
+|  14 | Bhushan | Latur   | 9899804534 |  12 | 2021-02-22 |  100 |  10 |    4 |
+|  14 | Bhushan | Latur   | 9899804534 |  13 | 2022-12-02 |   15 |  10 |    7 |
+|  15 | Bhumi   | Beed    | 9776655534 |   1 | 2021-09-17 |   12 |   1 |    2 |
+|  15 | Bhumi   | Beed    | 9776655534 |   2 | 2001-02-12 |   12 |   1 |    3 |
+|  15 | Bhumi   | Beed    | 9776655534 |   3 | 2001-02-22 |  122 |   4 |    5 |
+|  15 | Bhumi   | Beed    | 9776655534 |   4 | 2001-06-22 |  122 |   5 |   10 |
+|  15 | Bhumi   | Beed    | 9776655534 |   5 | 2001-06-02 |   12 |   7 |    5 |
+|  15 | Bhumi   | Beed    | 9776655534 |   6 | 2001-06-10 |   12 |   8 |   10 |
+|  15 | Bhumi   | Beed    | 9776655534 |   7 | 2013-10-12 |   12 |  13 |    8 |
+|  15 | Bhumi   | Beed    | 9776655534 |   8 | 2018-10-12 |   12 |  15 |    8 |
+|  15 | Bhumi   | Beed    | 9776655534 |   9 | 2018-10-12 |   12 |  15 |    6 |
+|  15 | Bhumi   | Beed    | 9776655534 |  11 | 2021-12-12 |   12 |  11 |    4 |
+|  15 | Bhumi   | Beed    | 9776655534 |  12 | 2021-02-22 |  100 |  10 |    4 |
+|  15 | Bhumi   | Beed    | 9776655534 |  13 | 2022-12-02 |   15 |  10 |    7 |
++-----+---------+---------+------------+-----+------------+------+-----+------+
+168 rows in set (0.00 sec)
+
+
+mysql> select * from item;
++-----+------------+-----------+--------+--------+
+| ino | iname      | itype     | iprice | icount |
++-----+------------+-----------+--------+--------+
+|   2 | perk       | chocolate |     18 |    195 |
+|   3 | 5star      | chocolate |     18 |     15 |
+|   4 | cadboury   | chocolate |     23 |     15 |
+|   5 | milk       | grocery   |     29 |     95 |
+|   6 | bread      | grocery   |     45 |    195 |
+|   7 | snacks     | grocery   |     18 |     15 |
+|   8 | earbuds    | gadgets   |    511 |     15 |
+|   9 | watch      | gadgets   |    581 |     15 |
+|  10 | headphones | gadgets   |    611 |     15 |
++-----+------------+-----------+--------+--------+
+9 rows in set (0.00 sec)
+
+mysql> select * from purchase;
++-----+------------+------+-----+------+
+| pno | pdate      | pqty | cno | ino  |
++-----+------------+------+-----+------+
+|   1 | 2021-09-17 |   12 |   1 |    2 |
+|   2 | 2001-02-12 |   12 |   1 |    3 |
+|   3 | 2001-02-22 |  122 |   4 |    5 |
+|   4 | 2001-06-22 |  122 |   5 |   10 |
+|   5 | 2001-06-02 |   12 |   7 |    5 |
+|   6 | 2001-06-10 |   12 |   8 |   10 |
+|   7 | 2013-10-12 |   12 |  13 |    8 |
+|   8 | 2018-10-12 |   12 |  15 |    8 |
+|   9 | 2018-10-12 |   12 |  15 |    6 |
+|  11 | 2021-12-12 |   12 |  11 |    4 |
+|  12 | 2021-02-22 |  100 |  10 |    4 |
+|  13 | 2022-12-02 |   15 |  10 |    7 |
++-----+------------+------+-----+------+
+12 rows in set (0.00 sec)
+
+
+7)
+mysql> select cno,cname from customer where cno=(select cno from purchase where ino=(select ino from item where itype="milk" ));
+Empty set (0.09 sec)
+
+mysql> select cno,cname from customer where cno=(select cno from purchase where ino=(select ino from item where iname="milk" ));
+ERROR 1242 (21000): Subquery returns more than 1 row
+mysql> select cno,cname from customer where cno in(select cno from purchase where ino=(select ino from item where iname="milk" ));
++-----+---------+
+| cno | cname   |
++-----+---------+
+|   4 | Arushi  |
+|   7 | Arunita |
++-----+---------+
+2 rows in set (0.07 sec)
+
+
+mysql> select * from customer;
++-----+---------+---------+------------+
+| cno | cname   | ccity   | cmobile    |
++-----+---------+---------+------------+
+|   1 | Srushti | Pune    | 8978675678 |
+|   3 | Anshika | Nagpur  | 9876234567 |
+|   4 | Arushi  | Delhi   | 9876237898 |
+|   5 | Rashi   | Mumbai  | 9876722338 |
+|   6 | Raj     | Mumbai  | 9872341338 |
+|   7 | Arunita | Kolkata | 8976234455 |
+|   8 | Shreya  | Kolkata | 8998877655 |
+|   9 | Sham    | Kolkata | 7898564534 |
+|  10 | Shaan   | Kolkata | 7898564594 |
+|  11 | Sam     | Kolkata | 7890564594 |
+|  12 | Madhu   | Latur   | 7899804534 |
+|  13 | Srushti | Latur   | 9999804534 |
+|  14 | Bhushan | Latur   | 9899804534 |
+|  15 | Bhumi   | Beed    | 9776655534 |
++-----+---------+---------+------------+
+14 rows in set (0.00 sec)
+
+8) 
+
+
+mysql> select cno,cname from customer where ccity in( select ccity from customer where cname="Srushti");
++-----+---------+
+| cno | cname   |
++-----+---------+
+|   1 | Srushti |
+|  12 | Madhu   |
+|  13 | Srushti |
+|  14 | Bhushan |
++-----+---------+
+4 rows in set (0.04 sec)
+
+
+
+
+mysql> select cno,cname from customer where ccity in( select ccity from customer where cname="Shaan");
++-----+---------+
+| cno | cname   |
++-----+---------+
+|   7 | Arunita |
+|   8 | Shreya  |
+|   9 | Sham    |
+|  10 | Shaan   |
+|  11 | Sam     |
++-----+---------+
+5 rows in set (0.00 sec)
+
+9)
+
+mysql> create table emp1(empno int primary key auto_increment,ename varchar(20 ) not null,address varchar(20) default "Pune", phno bigint unique,post int,sal int check(sal>0)  );
+Query OK, 0 rows affected (0.57 sec)
+
+mysql> desc emp1;
++---------+-------------+------+-----+---------+----------------+
+| Field   | Type        | Null | Key | Default | Extra          |
++---------+-------------+------+-----+---------+----------------+
+| empno   | int         | NO   | PRI | NULL    | auto_increment |
+| ename   | varchar(20) | NO   |     | NULL    |                |
+| address | varchar(20) | YES  |     | Pune    |                |
+| phno    | bigint      | YES  | UNI | NULL    |                |
+| post    | int         | YES  |     | NULL    |                |
+| sal     | int         | YES  |     | NULL    |                |
++---------+-------------+------+-----+---------+----------------+
+6 rows in set (0.02 sec)
+
+
+10)
+
+mysql> select * from item where iprice=(select min(iprice) from item);
++-----+--------+-----------+--------+--------+
+| ino | iname  | itype     | iprice | icount |
++-----+--------+-----------+--------+--------+
+|   2 | perk   | chocolate |     18 |    195 |
+|   3 | 5star  | chocolate |     18 |     15 |
+|   7 | snacks | grocery   |     18 |     15 |
++-----+--------+-----------+--------+--------+
+3 rows in set (0.00 sec)
+
+11)
+
+mysql> select * from item where iprice=(select max(iprice) from item);
++-----+------------+---------+--------+--------+
+| ino | iname      | itype   | iprice | icount |
++-----+------------+---------+--------+--------+
+|  10 | headphones | gadgets |    611 |     15 |
++-----+------------+---------+--------+--------+
+1 row in set (0.00 sec)
+
+
+
+
+mysql> select * from purchase ;
++-----+------------+------+-----+------+
+| pno | pdate      | pqty | cno | ino  |
++-----+------------+------+-----+------+
+|   1 | 2021-09-17 |   12 |   1 |    2 |
+|   2 | 2001-02-12 |   12 |   1 |    3 |
+|   3 | 2001-02-22 |  122 |   4 |    5 |
+|   4 | 2001-06-22 |  122 |   5 |   10 |
+|   5 | 2001-06-02 |   12 |   7 |    5 |
+|   6 | 2001-06-10 |   12 |   8 |   10 |
+|   7 | 2013-10-12 |   12 |  13 |    8 |
+|   8 | 2018-10-12 |   12 |  15 |    8 |
+|   9 | 2018-10-12 |   12 |  15 |    6 |
+|  11 | 2021-12-12 |   12 |  11 |    4 |
+|  12 | 2021-02-22 |  100 |  10 |    4 |
+|  13 | 2022-12-02 |   15 |  10 |    7 |
++-----+------------+------+-----+------+
+12 rows in set (0.00 sec)
+
+
+12)
+
+mysql> select * from purchase where cno=10 union select * from purchase where cno=3;
++-----+------------+------+-----+------+
+| pno | pdate      | pqty | cno | ino  |
++-----+------------+------+-----+------+
+|  12 | 2021-02-22 |  100 |  10 |    4 |
+|  13 | 2022-12-02 |   15 |  10 |    7 |
++-----+------------+------+-----+------+
+2 rows in set (0.00 sec)
+
+13)
+
+mysql> create view as customerview select cno,cname,ccity from customer;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'as customerview select cno,cname,ccity from customer' at line 1
+mysql> create view  customerview as  select cno,cname,ccity from customer;
+Query OK, 0 rows affected (0.18 sec)
+
+mysql> select * from customerview;
++-----+---------+---------+
+| cno | cname   | ccity   |
++-----+---------+---------+
+|   1 | Srushti | Pune    |
+|   3 | Anshika | Nagpur  |
+|   4 | Arushi  | Delhi   |
+|   5 | Rashi   | Mumbai  |
+|   6 | Raj     | Mumbai  |
+|   7 | Arunita | Kolkata |
+|   8 | Shreya  | Kolkata |
+|   9 | Sham    | Kolkata |
+|  10 | Shaan   | Kolkata |
+|  11 | Sam     | Kolkata |
+|  12 | Madhu   | Latur   |
+|  13 | Srushti | Latur   |
+|  14 | Bhushan | Latur   |
+|  15 | Bhumi   | Beed    |
++-----+---------+---------+
+14 rows in set (0.10 sec)
+
+
+
+
+mysql> update customerview set ccity="Pune" where cno=10;
+Query OK, 1 row affected (0.09 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from customerview;
++-----+---------+---------+
+| cno | cname   | ccity   |
++-----+---------+---------+
+|   1 | Srushti | Pune    |
+|   3 | Anshika | Nagpur  |
+|   4 | Arushi  | Delhi   |
+|   5 | Rashi   | Mumbai  |
+|   6 | Raj     | Mumbai  |
+|   7 | Arunita | Kolkata |
+|   8 | Shreya  | Kolkata |
+|   9 | Sham    | Kolkata |
+|  10 | Shaan   | Pune    |
+|  11 | Sam     | Kolkata |
+|  12 | Madhu   | Latur   |
+|  13 | Srushti | Latur   |
+|  14 | Bhushan | Latur   |
+|  15 | Bhumi   | Beed    |
++-----+---------+---------+
+14 rows in set (0.00 sec)
+
+
+14)
+
+mysql> create view  itemview as  select ino,iname,itype,iprice from item ;
+Query OK, 0 rows affected (0.21 sec)
+
+mysql> select * from itemview;
++-----+------------+-----------+--------+
+| ino | iname      | itype     | iprice |
++-----+------------+-----------+--------+
+|   2 | perk       | chocolate |     18 |
+|   3 | 5star      | chocolate |     18 |
+|   4 | cadboury   | chocolate |     23 |
+|   5 | milk       | grocery   |     29 |
+|   6 | bread      | grocery   |     45 |
+|   7 | snacks     | grocery   |     18 |
+|   8 | earbuds    | gadgets   |    511 |
+|   9 | watch      | gadgets   |    581 |
+|  10 | headphones | gadgets   |    611 |
++-----+------------+-----------+--------+
+9 rows in set (0.05 sec)
+
+mysql> update itemview set iname="TV" where ino=10;
+Query OK, 1 row affected (0.06 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from itemview;
++-----+----------+-----------+--------+
+| ino | iname    | itype     | iprice |
++-----+----------+-----------+--------+
+|   2 | perk     | chocolate |     18 |
+|   3 | 5star    | chocolate |     18 |
+|   4 | cadboury | chocolate |     23 |
+|   5 | milk     | grocery   |     29 |
+|   6 | bread    | grocery   |     45 |
+|   7 | snacks   | grocery   |     18 |
+|   8 | earbuds  | gadgets   |    511 |
+|   9 | watch    | gadgets   |    581 |
+|  10 | TV       | gadgets   |    611 |
++-----+----------+-----------+--------+
+9 rows in set (0.00 sec)
+
+mysql> desc emp1;
++---------+-------------+------+-----+---------+----------------+
+| Field   | Type        | Null | Key | Default | Extra          |
++---------+-------------+------+-----+---------+----------------+
+| empno   | int         | NO   | PRI | NULL    | auto_increment |
+| ename   | varchar(20) | NO   |     | NULL    |                |
+| address | varchar(20) | YES  |     | Pune    |                |
+| phno    | bigint      | YES  | UNI | NULL    |                |
+| post    | int         | YES  |     | NULL    |                |
+| sal     | int         | YES  |     | NULL    |                |
++---------+-------------+------+-----+---------+----------------+
+6 rows in set (0.11 sec)
+
+mysql> select * from emp1;
++-------+-------+---------+-------------+-------+----------+
+| empno | ename | address | phno        | post  | sal      |
++-------+-------+---------+-------------+-------+----------+
+|     1 | S     | NULL    | 98000998899 | 12222 | 11111111 |
++-------+-------+---------+-------------+-------+----------+
+1 row in set (0.00 sec)
+
+15)
+
+
+mysql> set session profiling=1;
+Query OK, 0 rows affected, 1 warning (0.10 sec)
+
+
+mysql> create index empindex on emp1(empno,ename);
+Query OK, 0 rows affected (0.35 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc emp1;
++---------+-------------+------+-----+---------+----------------+
+| Field   | Type        | Null | Key | Default | Extra          |
++---------+-------------+------+-----+---------+----------------+
+| empno   | int         | NO   | PRI | NULL    | auto_increment |
+| ename   | varchar(20) | NO   |     | NULL    |                |
+| address | varchar(20) | YES  |     | Pune    |                |
+| phno    | bigint      | YES  | UNI | NULL    |                |
+| post    | int         | YES  |     | NULL    |                |
+| sal     | int         | YES  |     | NULL    |                |
++---------+-------------+------+-----+---------+----------------+
+6 rows in set (0.09 sec)
+
+mysql> show profiles;
++----------+------------+--------------------------------------------+
+| Query_ID | Duration   | Query                                      |
++----------+------------+--------------------------------------------+
+|        1 | 0.35020775 | create index empindex on emp1(empno,ename) |
+|        2 | 0.09285100 | desc emp1                                  |
++----------+------------+--------------------------------------------+
+2 rows in set, 1 warning (0.01 sec)
+
